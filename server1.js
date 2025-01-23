@@ -318,29 +318,37 @@ app.get('/teachers', (req, res) => {
         return res.status(401).send("Unauthorized");
     }
 
-    const studentClass = 1; // Replace with actual student class from session or request
-
-    db.all("SELECT * FROM teachers WHERE subject = ? AND classes LIKE ?", [subject, `%${studentClass}%`], function(err, rows) {
-        if (err) {
-            return res.status(500).send("Error fetching teachers");
+    // Get student class from session
+    db.get("SELECT class FROM students WHERE email = ?", [studentEmail], function(err, row) {
+        if (err || !row) {
+            return res.status(500).send("Error fetching student class");
         }
 
-        // Check if student is enrolled in each teacher's class
-        const promises = rows.map(teacher => new Promise((resolve, reject) => {
-            db.get("SELECT * FROM enrollments JOIN students ON enrollments.student_id = students.id WHERE enrollments.teacher_id = ? AND students.email = ?", [teacher.id, studentEmail], function(err, enrollment) {
-                if (err) {
-                    return reject(err);
-                }
-                if (!enrollment) {
-                    teacher.meet_link = null; // Remove meet link if not enrolled
-                }
-                resolve(teacher);
-            });
-        }));
+        const studentClass = row.class;
 
-        Promise.all(promises)
-            .then(teachers => res.json(teachers))
-            .catch(err => res.status(500).send("Error processing enrollments"));
+        // Fetch teachers based on subject and student class
+        db.all("SELECT * FROM teachers WHERE subject = ? AND classes LIKE ?", [subject, `%${studentClass}%`], function(err, rows) {
+            if (err) {
+                return res.status(500).send("Error fetching teachers");
+            }
+
+            // Check if student is enrolled in each teacher's class
+            const promises = rows.map(teacher => new Promise((resolve, reject) => {
+                db.get("SELECT * FROM enrollments JOIN students ON enrollments.student_id = students.id WHERE enrollments.teacher_id = ? AND students.email = ?", [teacher.id, studentEmail], function(err, enrollment) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    if (!enrollment) {
+                        teacher.meet_link = null; // Remove meet link if not enrolled
+                    }
+                    resolve(teacher);
+                });
+            }));
+
+            Promise.all(promises)
+                .then(teachers => res.json(teachers))
+                .catch(err => res.status(500).send("Error processing enrollments"));
+        });
     });
 });
 
