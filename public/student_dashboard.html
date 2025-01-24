@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - EduConnect</title>
+    <link rel="stylesheet" href="styles2.css">
+    <script src="scripts/student_dashboard.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="logo.jpg" alt="EduConnect Logo">
+            </div>
+            <div class="slogan">
+                <h1>EduConnect: Where Learning Meets Excellence</h1>
+            </div>
+            <div class="nav-buttons">
+                <button id="logoutButton">Logout</button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="dashboard">
+            <div class="sidebar">
+                <h2 id="welcome-message">Welcome, Student</h2>
+                <div class="enrolled-section" id="enrolled-section" style="display: none;">
+                    <h3>Enrolled Classes</h3>
+                    <ul id="enrolled-list"></ul>
+                </div>
+                <div class="assignments-section" id="assignments-section" style="display: none;">
+                    <h3>Assignments</h3>
+                    <ul id="assignments-list"></ul>
+                </div>
+                <div class="submissions-section" id="submissions-section">
+                    <h3>Submissions</h3>
+                    <ul id="submissions-list"></ul>
+                </div>
+            </div>
+            <div class="main-content">
+                <h2>Student Dashboard</h2>
+                <div class="subjects">
+                    <h3>Available Subjects</h3>
+                    <ul id="subject-list"></ul>
+                </div>
+                <div class="teachers" id="teachers-section" style="display:none;">
+                    <h3>Teachers</h3>
+                    <ul id="teacher-list"></ul>
+                </div>
+                <div class="feedback" id="feedback-section" style="display:none;">
+                    <h3>Submit Feedback</h3>
+                    <form id="feedbackForm">
+                        <label for="teacher-id">Teacher:</label>
+                        <select id="teacher-id" name="teacherId"></select>
+                        <label for="rating">Rating:</label>
+                        <input type="number" id="rating" name="rating" min="1" max="5" required>
+                        <label for="comments">Comments:</label>
+                        <textarea id="comments" name="comments" required></textarea>
+                        <button type="submit">Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- New Chat Section -->
+         <!-- New Chat Section -->
+         <div class="chat" id="chat-section">
+            <h3>Still Confused with Studies? Chat with our EduAI!</h3>
+            <button id="chatButton">Chat with EduAI</button>
+        </div>
+    </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 EduConnect. All rights reserved.</p>
+    </footer>
+     <!-- Chat Modal -->
+     <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <iframe src="https://amaljithuk-eduai.hf.space/" width="100%" height="500px"></iframe>
+        </div>
+    </div>
+  
+</body>
+</html>
